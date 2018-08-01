@@ -16,8 +16,8 @@ device_set_plist_path = '%s/Library/Developer/CoreSimulator/Devices/device_set.p
 device_plist_name = 'device.plist'
 
 
-# 模拟器
 class Simulator(object):
+    """模拟器对象"""
     def __init__(self, path, udid, devicetype, name, runtime):
         self.path = path
         self.udid = udid
@@ -30,8 +30,8 @@ class Simulator(object):
               (self.path, self.udid, self.devicetype, self.name, self.runtime))
 
 
-# 文件目录大小
 def size_of_folder(path):
+    """文件目录大小"""
     size = 0.0
     for (root, dirs, files) in os.walk(path):
         for name in files:
@@ -44,8 +44,8 @@ def size_of_folder(path):
     return size / (1024**2)
 
 
-# 删除
 def delete_folder(path):
+    """删除"""
     file_list = os.listdir(path)
     for f in file_list:
         file_path = os.path.join(path, f)
@@ -57,8 +57,8 @@ def delete_folder(path):
             print('%s 目录已删除！' % file_path)
 
 
-# 查找所有模拟器文件
 def find_all_simulator(path):
+    """查找所有模拟器文件"""
     folders = os.listdir(path)
     return [f for f in folders if '-' in f]
 
@@ -70,8 +70,8 @@ def read_device_plist():
     return set_plist
 
 
-# 清理垃圾
 def clean_garbage():
+    """清理垃圾"""
     size = 0.0
     paths = [archives_path, derivedData_path, products_path]
     print('要清理的目录：')
@@ -85,8 +85,8 @@ def clean_garbage():
         print('大小：%.2f MB' % size)
 
 
-# 清理模拟器
 def clean_simulator():
+    """清理模拟器"""
     simulator_folders = find_all_simulator(simulator_path)
     device_array = []
     for f in simulator_folders:
@@ -137,7 +137,11 @@ def clean_simulator():
 
 def clean_xcode():
     clean_garbage()
-    clean_simulator()
+    go_on = input('是否继续清理模拟器？（yes/no）\n')
+    if go_on.lower() == 'yes':
+        clean_simulator()
+    else:
+        print('程序结束，欢迎下次再来~')
     # read_device_plist()
 
 
